@@ -109,7 +109,7 @@ export default class Bard {
       if (this.position.y + this.height > this.gameHeight) {
         this.position.y = this.gameHeight - this.height - 1;
         this.velocity = 0;
-        //this.start = 2;
+        this.start = 2;
       }
     }
   }
