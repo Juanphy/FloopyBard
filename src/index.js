@@ -9,6 +9,8 @@ ctx.font = "30px Arial";
 const GAME_WIDTH = 600;
 const GAME_HEIGHT = 900;
 
+var gameStatus = 0;
+
 let bard = new Bard(GAME_WIDTH, GAME_HEIGHT);
 let pipes = new Pipes(GAME_WIDTH, GAME_HEIGHT);
 
@@ -20,19 +22,30 @@ function gameLoop(timeStamp) {
   let deltaTime = timeStamp - lastTime;
   lastTime = timeStamp;
 
-  checkCollision(bard, pipes);
-  ctx.clearRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
-  bard.update(deltaTime);
-  bard.draw(ctx);
-  pipes.update(deltaTime);
-  pipes.draw(ctx);
-  if (bard.start === 2) {
-    bard.reset();
-    pipes.reset();
+  ctx.fillText(`gameStatus: ${gameStatus}`, 400, 200);
+
+  //INITIAL
+  if (gameStatus === 0) {
+    ctx.clearRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
+    bard.draw(ctx);
+    if (bard.start === 1) gameStatus = 1;
+  } else if (gameStatus === 1) {
+    //GAME
     ctx.clearRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
     bard.update(deltaTime);
     bard.draw(ctx);
     pipes.update(deltaTime);
+    pipes.draw(ctx);
+    checkCollision(bard, pipes);
+  } else if (gameStatus === 2) {
+    //CRASHED
+    if (bard.start === 1) gameStatus = 3;
+  } else if (gameStatus === 3) {
+    //RESTART
+    //ctx.clearRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
+    bard.reset();
+    bard.draw(ctx);
+    pipes.reset();
     pipes.draw(ctx);
   }
   requestAnimationFrame(gameLoop);
@@ -41,8 +54,9 @@ function gameLoop(timeStamp) {
 function checkCollision(bard, pipes) {
   //GROUND COLLISTION
   if (bard.position.y + bard.height > bard.gameHeight) {
+    gameStatus = 2;
     bard.crash();
-    return false;
+    return;
   }
   //CHECK PIPE COLLISION
   if (
@@ -51,17 +65,19 @@ function checkCollision(bard, pipes) {
   ) {
     //TOP PIPE COLLISION
     if (bard.position.y <= pipes.position.heightUp) {
+      gameStatus = 2;
       bard.crash();
-      return false;
+      return;
     }
     //BOTTOM PIPE COLLISION
     if (bard.position.y + bard.height >= 900 + pipes.position.heightDown) {
+      gameStatus = 2;
       bard.crash();
-      return false;
+      return;
     }
   }
-
-  return true;
+  //NO COLLISION DETECTED
+  return;
 }
 
 gameLoop();
