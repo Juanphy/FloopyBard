@@ -70,6 +70,7 @@ export default class Bard {
       ctx.textAlign = "left";
       ctx.fillText(`Velocity: ${this.velocity}`, 400, 50);
       ctx.fillText(`UpSpeed: ${this.upSpeed}`, 400, 100);
+      ctx.fillText(`start: ${this.start}`, 400, 150);
       ctx.font = "15px Arial";
       ctx.fillText(
         `Up:${this.upPressed},Down:${this.downPressed},Left:${
@@ -87,6 +88,7 @@ export default class Bard {
       ctx.textAlign = "left";
       ctx.fillText(`Velocity: ${this.velocity}`, 400, 50);
       ctx.fillText(`UpSpeed: ${this.upSpeed}`, 400, 100);
+      ctx.fillText(`start: ${this.start}`, 400, 150);
       ctx.fillStyle = "red";
       ctx.textAlign = "center";
       ctx.fillText(`GAME OVER`, this.gameWidth / 2, this.gameHeight / 2);
@@ -106,11 +108,16 @@ export default class Bard {
       if (this.position.x + this.width > this.gameWidth)
         this.position.x = this.gameWidth - this.width;
       if (this.position.y < 0) this.position.y = 0;
-      if (this.position.y + this.height > this.gameHeight) {
-        this.position.y = this.gameHeight - this.height - 1;
-        this.velocity = 0;
-        this.start = 2;
-      }
     }
+  }
+
+  crash() {
+    this.velocity = 0;
+    this.start = 2;
+  }
+
+  reset() {
+    this.position.x = gameWidth / 4 - this.width / 2;
+    this.position.y = gameHeight / 2 - this.height
   }
 }

@@ -34,6 +34,15 @@ export default class Bard {
     );
   }
 
+  reset() {
+    this.position.x = this.gameWidth;
+    this.position.heightUp =
+      this.gameHeight - (this.initialHeight + this.interPipeSpace);
+    this.position.heightDown = -this.initialHeight;
+    this.position.yDown = this.gameHeight - 1;
+    this.position.yUp = 0;
+  }
+
   update(deltaTime) {
     if (!deltaTime) return;
 
