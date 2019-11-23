@@ -8,7 +8,6 @@ ctx.font = "30px Arial";
 
 const GAME_WIDTH = 600;
 const GAME_HEIGHT = 900;
-const MIN_PIPE_HEIGHT = 100;
 
 let bard = new Bard(GAME_WIDTH, GAME_HEIGHT);
 let pipes = new Pipes(GAME_WIDTH, GAME_HEIGHT);

@@ -39,6 +39,14 @@ export default class Bard {
 
     this.position.x -= this.scrollSpeed;
 
-    if (this.position.x + this.width <= 0) this.position.x = this.gameWidth;
+    if (this.position.x + this.width <= 0) {
+      this.position.x = this.gameWidth;
+      let min = this.minPipeHeight;
+      let max = this.gameHeight - (this.minPipeHeight + this.interPipeSpace);
+      let newHeight = Math.random() * (max - min) + min;
+      this.position.heightUp =
+        this.gameHeight - (newHeight + this.interPipeSpace);
+      this.position.heightDown = -newHeight;
+    }
   }
 }
