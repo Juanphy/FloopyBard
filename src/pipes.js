@@ -7,8 +7,11 @@ export default class Bard {
     this.initialHeight = this.gameHeight / 2 - this.interPipeSpace / 2;
     this.scrollSpeed = 10;
     this.isAlive = 1;
-    this.minPipeHeight = 100;
-    this.multiPipeSpace = gameWidth / 2;
+    this.minPipeHeight = 50;
+    this.multiPipeSpace = gameWidth / 2 + this.width / 2;
+    this.enterImage = document.getElementById("enterPipe");
+    this.fallImage = document.getElementById("fallPipe");
+    this.enterImageHeight = 20;
 
     this.position = {
       x: this.gameWidth,
@@ -25,30 +28,86 @@ export default class Bard {
   }
 
   draw(ctx) {
-    ctx.fillStyle = "#0ff";
+    /*ctx.fillStyle = "#0ff";
     ctx.fillRect(
       this.position.x,
       this.position.yDown,
       this.width,
       this.position.heightDown
+    );*/
+    ctx.drawImage(
+      this.fallImage,
+      this.position.x,
+      this.position.yDown,
+      this.width,
+      this.position.heightDown + this.enterImageHeight
     );
-    ctx.fillRect(
+    ctx.drawImage(
+      this.enterImage,
+      this.position.x,
+      this.gameHeight + this.position.heightDown,
+      this.width,
+      this.enterImageHeight
+    );
+    /*ctx.fillRect(
       this.position.x,
       this.position.yUp,
       this.width,
       this.position.heightUp
+    );*/
+    ctx.drawImage(
+      this.fallImage,
+      this.position.x,
+      this.position.yUp,
+      this.width,
+      this.position.heightUp - this.enterImageHeight
     );
-    ctx.fillRect(
+    ctx.drawImage(
+      this.enterImage,
+      this.position.x,
+      this.position.heightUp - this.enterImageHeight,
+      this.width,
+      this.enterImageHeight
+    );
+    /*ctx.fillRect(
       this.position.x2,
       this.position.yDown2,
       this.width,
       this.position.heightDown2
+    );*/
+    ctx.drawImage(
+      this.fallImage,
+      this.position.x2,
+      this.position.yDown2,
+      this.width,
+      this.position.heightDown2 + this.enterImageHeight
     );
-    ctx.fillRect(
+    ctx.drawImage(
+      this.enterImage,
+      this.position.x2,
+      this.gameHeight + this.position.heightDown2,
+      this.width,
+      this.enterImageHeight
+    );
+    /*ctx.fillRect(
       this.position.x2,
       this.position.yUp2,
       this.width,
       this.position.heightUp2
+    );*/
+    ctx.drawImage(
+      this.fallImage,
+      this.position.x2,
+      this.position.yUp2,
+      this.width,
+      this.position.heightUp2 - this.enterImageHeight
+    );
+    ctx.drawImage(
+      this.enterImage,
+      this.position.x2,
+      this.position.heightUp2 - this.enterImageHeight,
+      this.width,
+      this.enterImageHeight
     );
   }
 

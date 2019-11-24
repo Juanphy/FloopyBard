@@ -5,6 +5,7 @@ export default class Bard {
     this.width = 50;
     this.height = 50;
     this.start = 0;
+    this.image = document.getElementById("imageBard");
 
     this.maxSpeed = 35;
     this.maxSpeedY = 50;
@@ -54,12 +55,14 @@ export default class Bard {
       ctx.fillText(`PRESS UP`, this.gameWidth / 2, this.gameHeight / 2);
     } else if (gameStatus === 1 || gameStatus === 3) {
       //GAME
-      ctx.fillStyle = "#0ff";
-      ctx.fillRect(this.position.x, this.position.y, this.width, this.height);
+      //ctx.fillStyle = "#0ff";
+      //ctx.fillRect(this.position.x, this.position.y, this.width, this.height);
+      ctx.drawImage(this.image, this.position.x - 20, this.position.y, 80, 50);
     } else if (gameStatus === 2) {
       //END
-      ctx.fillStyle = "#0ff";
-      ctx.fillRect(this.position.x, this.position.y, this.width, this.height);
+      //ctx.fillStyle = "#0ff";
+      //ctx.fillRect(this.position.x, this.position.y, this.width, this.height);
+      ctx.drawImage(this.image, this.position.x- 20, this.position.y, 80, 50);
       ctx.font = "30px Arial";
       ctx.fillStyle = "red";
       ctx.textAlign = "center";

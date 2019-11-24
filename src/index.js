@@ -5,7 +5,7 @@ import Score from "/src/score";
 
 let canvas = document.getElementById("gameScreen");
 let ctx = canvas.getContext("2d");
-ctx.font = "30px Arial";
+//images
 
 const GAME_WIDTH = 600;
 const GAME_HEIGHT = 900;
@@ -22,6 +22,7 @@ new InputHandler(bard);
 
 let lastTime = 0;
 
+
 function gameLoop(timeStamp) {
   let deltaTime = timeStamp - lastTime;
   lastTime = timeStamp;
@@ -34,10 +35,10 @@ function gameLoop(timeStamp) {
   } else if (gameStatus === 1) {
     //GAME
     ctx.clearRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
-    bard.update(deltaTime);
-    bard.draw(ctx, gameStatus);
     pipes.update(deltaTime);
     pipes.draw(ctx);
+    bard.update(deltaTime);
+    bard.draw(ctx, gameStatus);
     checkCollision(bard, pipes, score, function() {
       score.draw(ctx);
     });
