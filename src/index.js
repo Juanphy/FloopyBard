@@ -37,8 +37,9 @@ function gameLoop(timeStamp) {
     bard.draw(ctx, gameStatus);
     pipes.update(deltaTime);
     pipes.draw(ctx);
-    checkCollision(bard, pipes, score);
-    score.draw(ctx);
+    checkCollision(bard, pipes, score, function() {
+      score.draw(ctx);
+    });
   } else if (gameStatus === 2) {
     //CRASHED
     ctx.clearRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
@@ -52,17 +53,18 @@ function gameLoop(timeStamp) {
     bard.reset();
     pipes.reset();
     score.reset();
+    quasiScore = false;
     gameStatus = 1;
   }
   requestAnimationFrame(gameLoop);
 }
 
-function checkCollision(bard, pipes, score) {
+function checkCollision(bard, pipes, score, callback) {
   //GROUND COLLISTION
   if (bard.position.y + bard.height > bard.gameHeight) {
     gameStatus = 2;
     bard.crash();
-    return;
+    callback();
   }
   //CHECK PIPE COLLISION
   if (
@@ -74,20 +76,20 @@ function checkCollision(bard, pipes, score) {
     if (bard.position.y <= pipes.position.heightUp) {
       gameStatus = 2;
       bard.crash();
-      return;
+      callback();
     }
     //BOTTOM PIPE COLLISION
     if (bard.position.y + bard.height >= 900 + pipes.position.heightDown) {
       gameStatus = 2;
       bard.crash();
-      return;
+      callback();
     }
   } else if (quasiScore) {
     score.add();
     quasiScore = false;
   }
   //NO COLLISION DETECTED
-  return;
+  callback();
 }
 
 gameLoop();
