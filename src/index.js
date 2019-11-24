@@ -1,6 +1,7 @@
 import Bard from "/src/bard";
 import InputHandler from "/src/input";
 import Pipes from "/src/pipes";
+import Score from "/src/score";
 
 let canvas = document.getElementById("gameScreen");
 let ctx = canvas.getContext("2d");
@@ -13,6 +14,8 @@ var gameStatus = 0;
 
 let bard = new Bard(GAME_WIDTH, GAME_HEIGHT);
 let pipes = new Pipes(GAME_WIDTH, GAME_HEIGHT);
+let score = new Score(GAME_WIDTH, GAME_HEIGHT);
+let quasiScore = false;
 
 new InputHandler(bard);
 
@@ -22,36 +25,39 @@ function gameLoop(timeStamp) {
   let deltaTime = timeStamp - lastTime;
   lastTime = timeStamp;
 
-  ctx.fillText(`gameStatus: ${gameStatus}`, 400, 200);
-
   //INITIAL
   if (gameStatus === 0) {
     ctx.clearRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
-    bard.draw(ctx);
+    bard.draw(ctx, gameStatus);
     if (bard.start === 1) gameStatus = 1;
   } else if (gameStatus === 1) {
     //GAME
     ctx.clearRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
     bard.update(deltaTime);
-    bard.draw(ctx);
+    bard.draw(ctx, gameStatus);
     pipes.update(deltaTime);
     pipes.draw(ctx);
-    checkCollision(bard, pipes);
+    checkCollision(bard, pipes, score);
+    score.draw(ctx);
   } else if (gameStatus === 2) {
     //CRASHED
+    ctx.clearRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
+    pipes.draw(ctx);
+    bard.draw(ctx, gameStatus);
+    score.draw(ctx);
     if (bard.start === 1) gameStatus = 3;
   } else if (gameStatus === 3) {
     //RESTART
-    //ctx.clearRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
+    ctx.clearRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
     bard.reset();
-    bard.draw(ctx);
     pipes.reset();
-    pipes.draw(ctx);
+    score.reset();
+    gameStatus = 1;
   }
   requestAnimationFrame(gameLoop);
 }
 
-function checkCollision(bard, pipes) {
+function checkCollision(bard, pipes, score) {
   //GROUND COLLISTION
   if (bard.position.y + bard.height > bard.gameHeight) {
     gameStatus = 2;
@@ -63,6 +69,7 @@ function checkCollision(bard, pipes) {
     bard.position.x + bard.width >= pipes.position.x &&
     bard.position.x <= pipes.position.x + pipes.width
   ) {
+    if (!quasiScore) quasiScore = true;
     //TOP PIPE COLLISION
     if (bard.position.y <= pipes.position.heightUp) {
       gameStatus = 2;
@@ -75,6 +82,9 @@ function checkCollision(bard, pipes) {
       bard.crash();
       return;
     }
+  } else if (quasiScore) {
+    score.add();
+    quasiScore = false;
   }
   //NO COLLISION DETECTED
   return;
