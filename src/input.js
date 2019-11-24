@@ -51,5 +51,15 @@ export default class InputHandler {
           break;
       }
     });
+
+    document.addEventListener("touchstart", event => {
+      bard.upPressed = true;
+      bard.movePaddle();
+    });
+
+    document.addEventListener("touchend", event => {
+      bard.upPressed = false;
+      bard.stop();
+    });
   }
 }

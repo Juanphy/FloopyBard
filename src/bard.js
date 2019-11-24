@@ -1,5 +1,5 @@
 export default class Bard {
-  constructor(gameWidth, gameHeight) {
+  constructor(gameWidth, gameHeight, mobile) {
     this.gameWidth = gameWidth;
     this.gameHeight = gameHeight;
     this.width = 50;
@@ -7,11 +7,17 @@ export default class Bard {
     this.start = 0;
     this.image = document.getElementById("imageBard");
 
-    this.maxSpeed = 35;
+    if (mobile) {
+      this.maxSpeed = 15; //mobile
+      this.gravity = 1; //mobile
+    } else {
+      this.maxSpeed = 35; //web browser
+      this.gravity = 2; //web browser
+    }
+
     this.maxSpeedY = 50;
     this.speed = 0;
     this.upSpeed = 0;
-    this.gravity = 2;
 
     this.velocity = 0;
     this.upPressed = false;
@@ -62,7 +68,7 @@ export default class Bard {
       //END
       //ctx.fillStyle = "#0ff";
       //ctx.fillRect(this.position.x, this.position.y, this.width, this.height);
-      ctx.drawImage(this.image, this.position.x- 20, this.position.y, 80, 50);
+      ctx.drawImage(this.image, this.position.x - 20, this.position.y, 80, 50);
       ctx.font = "30px Arial";
       ctx.fillStyle = "red";
       ctx.textAlign = "center";

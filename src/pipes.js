@@ -1,11 +1,12 @@
 export default class Bard {
-  constructor(gameWidth, gameHeight) {
+  constructor(gameWidth, gameHeight, mobile) {
     this.gameWidth = gameWidth;
     this.gameHeight = gameHeight;
     this.width = 80;
     this.interPipeSpace = 200;
     this.initialHeight = this.gameHeight / 2 - this.interPipeSpace / 2;
-    this.scrollSpeed = 10;
+    if (mobile) this.scrollSpeed = 5; //mobile
+    else this.scrollSpeed = 10; //webbrowser
     this.isAlive = 1;
     this.minPipeHeight = 50;
     this.multiPipeSpace = gameWidth / 2 + this.width / 2;

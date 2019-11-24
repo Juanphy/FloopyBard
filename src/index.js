@@ -10,10 +10,12 @@ let ctx = canvas.getContext("2d");
 const GAME_WIDTH = 600;
 const GAME_HEIGHT = 900;
 
+let mobile = detectmob();
+
 var gameStatus = 0;
 
-let bard = new Bard(GAME_WIDTH, GAME_HEIGHT);
-let pipes = new Pipes(GAME_WIDTH, GAME_HEIGHT);
+let bard = new Bard(GAME_WIDTH, GAME_HEIGHT, mobile);
+let pipes = new Pipes(GAME_WIDTH, GAME_HEIGHT, mobile);
 let score = new Score(GAME_WIDTH, GAME_HEIGHT);
 let quasiScore = false;
 let quasiScore2 = false;
@@ -21,7 +23,6 @@ let quasiScore2 = false;
 new InputHandler(bard);
 
 let lastTime = 0;
-
 
 function gameLoop(timeStamp) {
   let deltaTime = timeStamp - lastTime;
@@ -115,6 +116,22 @@ function checkCollision(bard, pipes, score, callback) {
   }
   //NO COLLISION DETECTED
   callback();
+}
+
+function detectmob() {
+  if (
+    navigator.userAgent.match(/Android/i) ||
+    navigator.userAgent.match(/webOS/i) ||
+    navigator.userAgent.match(/iPhone/i) ||
+    navigator.userAgent.match(/iPad/i) ||
+    navigator.userAgent.match(/iPod/i) ||
+    navigator.userAgent.match(/BlackBerry/i) ||
+    navigator.userAgent.match(/Windows Phone/i)
+  ) {
+    return true;
+  } else {
+    return false;
+  }
 }
 
 gameLoop();
