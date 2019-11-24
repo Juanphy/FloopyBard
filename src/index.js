@@ -16,6 +16,7 @@ let bard = new Bard(GAME_WIDTH, GAME_HEIGHT);
 let pipes = new Pipes(GAME_WIDTH, GAME_HEIGHT);
 let score = new Score(GAME_WIDTH, GAME_HEIGHT);
 let quasiScore = false;
+let quasiScore2 = false;
 
 new InputHandler(bard);
 
@@ -54,6 +55,7 @@ function gameLoop(timeStamp) {
     pipes.reset();
     score.reset();
     quasiScore = false;
+    quasiScore2 = false;
     gameStatus = 1;
   }
   requestAnimationFrame(gameLoop);
@@ -87,6 +89,28 @@ function checkCollision(bard, pipes, score, callback) {
   } else if (quasiScore) {
     score.add();
     quasiScore = false;
+  }
+
+  if (
+    bard.position.x + bard.width >= pipes.position.x2 &&
+    bard.position.x <= pipes.position.x2 + pipes.width
+  ) {
+    if (!quasiScore2) quasiScore2 = true;
+    //TOP PIPE COLLISION
+    if (bard.position.y <= pipes.position.heightUp2) {
+      gameStatus = 2;
+      bard.crash();
+      callback();
+    }
+    //BOTTOM PIPE COLLISION
+    if (bard.position.y + bard.height >= 900 + pipes.position.heightDown2) {
+      gameStatus = 2;
+      bard.crash();
+      callback();
+    }
+  } else if (quasiScore2) {
+    score.add();
+    quasiScore2 = false;
   }
   //NO COLLISION DETECTED
   callback();

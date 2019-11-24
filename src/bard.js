@@ -10,6 +10,7 @@ export default class Bard {
     this.maxSpeedY = 50;
     this.speed = 0;
     this.upSpeed = 0;
+    this.gravity = 2;
 
     this.velocity = 0;
     this.upPressed = false;
@@ -69,8 +70,8 @@ export default class Bard {
   update(deltaTime) {
     if (!deltaTime) return;
 
-    //if (this.start === 1) {
-    if (this.velocity < this.maxSpeedY && !this.upPressed) this.velocity += 2;
+    if (this.velocity < this.maxSpeedY && !this.upPressed)
+      this.velocity += this.gravity;
 
     this.position.x += this.speed;
     this.position.y += this.upSpeed + this.velocity;
@@ -79,7 +80,6 @@ export default class Bard {
     if (this.position.x + this.width > this.gameWidth)
       this.position.x = this.gameWidth - this.width;
     if (this.position.y < 0) this.position.y = 0;
-    //}
   }
 
   crash() {
