@@ -3,7 +3,7 @@ import InputHandler from "/src/input";
 import Pipes from "/src/pipes";
 import Score from "/src/score";
 
-let canvas = document.getElementById("gameScreen");
+var canvas = document.getElementById("gameScreen");
 let ctx = canvas.getContext("2d");
 //images
 
