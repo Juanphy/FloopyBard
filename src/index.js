@@ -29,6 +29,8 @@ let musicStart = false;
 new InputHandler(bard, flapSound);
 
 let lastTime = 0;
+if (mobile) bard.startText = "TOUCH TO START";
+else bard.startText = "PRESS UP";
 
 function gameLoop(timeStamp) {
   let deltaTime = timeStamp - lastTime;

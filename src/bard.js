@@ -6,6 +6,7 @@ export default class Bard {
     this.height = 50;
     this.start = 0;
     this.image = document.getElementById("imageBard");
+    this.startText = "";
 
     if (mobile) {
       this.maxSpeed = 15; //mobile
@@ -58,7 +59,7 @@ export default class Bard {
       ctx.font = "30px Arial";
       ctx.fillStyle = "black";
       ctx.textAlign = "center";
-      ctx.fillText(`PRESS UP`, this.gameWidth / 2, this.gameHeight / 2);
+      ctx.fillText(`${this.startText}`, this.gameWidth / 2, this.gameHeight / 2);
     } else if (gameStatus === 1 || gameStatus === 3) {
       //GAME
       //ctx.fillStyle = "#0ff";
