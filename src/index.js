@@ -2,6 +2,7 @@ import Bard from "/src/bard";
 import InputHandler from "/src/input";
 import Pipes from "/src/pipes";
 import Score from "/src/score";
+import Sound from "/src/sound";
 
 var canvas = document.getElementById("gameScreen");
 let ctx = canvas.getContext("2d");
@@ -17,10 +18,15 @@ var gameStatus = 0;
 let bard = new Bard(GAME_WIDTH, GAME_HEIGHT, mobile);
 let pipes = new Pipes(GAME_WIDTH, GAME_HEIGHT, mobile);
 let score = new Score(GAME_WIDTH, GAME_HEIGHT);
+let backgroundSound = new Sound("assets/sounds/bensound-funnysong.mp3");
+let flapSound = new Sound("assets/sounds/flap.flac");
+let hitSound = new Sound("assets/sounds/hit.mp3");
+let crySound = new Sound("assets/sounds/cry.wav");
+backgroundSound.volume = 10;
 let quasiScore = false;
 let quasiScore2 = false;
-
-new InputHandler(bard);
+let musicStart = false;
+new InputHandler(bard, flapSound);
 
 let lastTime = 0;
 
@@ -35,12 +41,16 @@ function gameLoop(timeStamp) {
     if (bard.start === 1) gameStatus = 1;
   } else if (gameStatus === 1) {
     //GAME
+    if (!musicStart) {
+      backgroundSound.play();
+      musicStart = true;
+    }
     ctx.clearRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
     pipes.update(deltaTime);
     pipes.draw(ctx);
     bard.update(deltaTime);
     bard.draw(ctx, gameStatus);
-    checkCollision(bard, pipes, score, function() {
+    checkCollision(bard, pipes, score, hitSound, crySound, function() {
       score.draw(ctx);
     });
   } else if (gameStatus === 2) {
@@ -63,7 +73,7 @@ function gameLoop(timeStamp) {
   requestAnimationFrame(gameLoop);
 }
 
-function checkCollision(bard, pipes, score, callback) {
+function checkCollision(bard, pipes, score, hitSound, crySound, callback) {
   //GROUND COLLISTION
   if (bard.position.y + bard.height > bard.gameHeight) {
     gameStatus = 2;
@@ -79,12 +89,16 @@ function checkCollision(bard, pipes, score, callback) {
     //TOP PIPE COLLISION
     if (bard.position.y <= pipes.position.heightUp) {
       gameStatus = 2;
+      hitSound.play();
+      crySound.play();
       bard.crash();
       callback();
     }
     //BOTTOM PIPE COLLISION
     if (bard.position.y + bard.height >= 900 + pipes.position.heightDown) {
       gameStatus = 2;
+      hitSound.play();
+      crySound.play();
       bard.crash();
       callback();
     }
@@ -101,12 +115,16 @@ function checkCollision(bard, pipes, score, callback) {
     //TOP PIPE COLLISION
     if (bard.position.y <= pipes.position.heightUp2) {
       gameStatus = 2;
+      hitSound.play();
+      crySound.play();
       bard.crash();
       callback();
     }
     //BOTTOM PIPE COLLISION
     if (bard.position.y + bard.height >= 900 + pipes.position.heightDown2) {
       gameStatus = 2;
+      hitSound.play();
+      crySound.play();
       bard.crash();
       callback();
     }

@@ -1,7 +1,8 @@
 import Bard from "./bard";
+import Sound from "./sound";
 
 export default class InputHandler {
-  constructor(bard) {
+  constructor(bard, flapSound) {
     document.addEventListener("keydown", event => {
       switch (event.keyCode) {
         case 37:
@@ -10,6 +11,7 @@ export default class InputHandler {
           break;
         case 38:
           bard.upPressed = true;
+          flapSound.play();
           bard.movePaddle();
           break;
         case 39:
@@ -54,6 +56,7 @@ export default class InputHandler {
 
     document.addEventListener("touchstart", event => {
       bard.upPressed = true;
+      flapSound.play();
       bard.movePaddle();
     });
 
